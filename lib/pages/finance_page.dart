@@ -1,3 +1,6 @@
+import 'dart:math' as Math show pi;
+
+import 'package:finance_app/widgets/action_widget.dart';
 import 'package:finance_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,7 +27,7 @@ class Finance extends GetView<FinanceController> {
           ),
         ],
       ),
-      body: Stack(
+      body: ListView(
         children: [
           Padding(
             padding: EdgeInsets.all(10.0),
@@ -193,71 +196,20 @@ class Finance extends GetView<FinanceController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Center(
-                      child: Container(
-                        padding: EdgeInsets.only(top: 16),
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadiusGeometry.circular(10),
-                          color: Color(0xffdadada),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.add, size: 30),
-                            CustomText(
-                              value: 'Topup',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25,
-                              color: Color(0xff000000),
-                            ),
-                          ],
-                        ),
-                      ),
+                    CustomAction(
+                      angle: 0,
+                      TextValue: 'Top Up',
+                      icon: Icons.add,
                     ),
-                    Center(
-                      child: Container(
-                        padding: EdgeInsets.only(top: 16),
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadiusGeometry.circular(10),
-                          color: Color(0xffdadada),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.arrow_upward, size: 30),
-                            CustomText(
-                              value: 'Send',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25,
-                              color: Color(0xff000000),
-                            ),
-                          ],
-                        ),
-                      ),
+                    CustomAction(
+                      angle: Math.pi / 4,
+                      TextValue: 'Send',
+                      icon: Icons.arrow_upward,
                     ),
-                    Center(
-                      child: Container(
-                        padding: EdgeInsets.only(top: 16),
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadiusGeometry.circular(10),
-                          color: Color(0xffdadada),
-                        ),
-                        child: Column(
-                          children: [
-                            Icon(Icons.arrow_downward, size: 30),
-                            CustomText(
-                              value: 'Receive',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 25,
-                              color: Color(0xff000000),
-                            ),
-                          ],
-                        ),
-                      ),
+                    CustomAction(
+                      angle: Math.pi / 4,
+                      TextValue: 'Receive',
+                      icon: Icons.arrow_downward,
                     ),
                   ],
                 ),
@@ -279,6 +231,7 @@ class Finance extends GetView<FinanceController> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
                 Container(
                   height: 250,
                   decoration: BoxDecoration(
@@ -288,36 +241,39 @@ class Finance extends GetView<FinanceController> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: ListView(
-                      children: controller.transactions.map(
-                        (transaction) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ClipOval(
-                                child: Image.asset(
-                                  transaction['imagePath'],
-                                  height: 60,
-                                  width: 60,
-                                  fit: BoxFit.fill,
-                                ),
+                      children: controller.transactions
+                          .map(
+                            (transaction) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ClipOval(
+                                    child: Image.asset(
+                                      transaction['imagePath'],
+                                      height: 60,
+                                      width: 60,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  CustomText(
+                                    value: transaction['title'],
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17,
+                                    color: Color(0xff000000),
+                                  ),
+                                  CustomText(
+                                    value: transaction['minus'],
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17,
+                                    color: Color(0xff000000),
+                                  ),
+                                ],
                               ),
-                              CustomText(
-                                value: transaction['title'],
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17,
-                                color: Color(0xff000000),
-                              ),
-                              CustomText(
-                                value: transaction['minus'],
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17,
-                                color: Color(0xff000000),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ).toList(),
+                            ),
+                          )
+                          .toList(),
                     ),
                   ),
                 ),
